@@ -7,22 +7,22 @@ import (
 )
 
 func TestPend(t *testing.T) {
-	pend := NewPend()
-	pend.Go(func() error {
+	p := New()
+	p.Go(func() error {
 		fmt.Println("1")
 		return nil
 	})
-	pend.Go(func() error {
+	p.Go(func() error {
 		fmt.Println("2")
 		time.Sleep(250 * time.Millisecond)
 		return nil
 	})
-	pend.Go(func() error {
+	p.Go(func() error {
 		fmt.Println("3")
 		return nil
 	})
 
-	err := pend.Wait()
+	err := p.Wait()
 	if err != nil {
 		t.Fatal(err)
 	}

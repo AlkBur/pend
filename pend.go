@@ -5,38 +5,38 @@ import (
 )
 
 type Pend struct {
-	wg sync.WaitGroup
+	wg  sync.WaitGroup
 	err []error
 
 	errCh chan error
-	done chan interface{}
+	done  chan interface{}
 }
 
-func NewPend() *Pend {
+func New() *Pend {
 
 	p := &Pend{
-		err: make([]error,0 ),
+		err:   make([]error, 0),
 		errCh: make(chan error, 1),
-		done: make(chan interface{}),
+		done:  make(chan interface{}),
 	}
 	go p.Run()
 
 	return p
 }
 
-func (p *Pend)Run() {
+func (p *Pend) Run() {
 	for {
 		select {
 		case <-p.done:
 			//Println("Done Pend")
 			return
-		case err := <- p.errCh:
+		case err := <-p.errCh:
 			p.err = append(p.err, err)
 		}
 	}
 }
 
-func (p *Pend)Go(h func() error)  {
+func (p *Pend) Go(h func() error) {
 	p.wg.Add(1)
 	go func() {
 		err := h()
@@ -45,7 +45,7 @@ func (p *Pend)Go(h func() error)  {
 	}()
 }
 
-func (p *Pend)Wait() error {
+func (p *Pend) Wait() error {
 	p.wg.Wait()
 	p.done <- struct{}{}
 	close(p.errCh)
@@ -57,6 +57,6 @@ func (p *Pend)Wait() error {
 	return nil
 }
 
-func (p *Pend)Done() {
+func (p *Pend) Done() {
 	p.wg.Done()
 }

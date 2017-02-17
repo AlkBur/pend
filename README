@@ -1,21 +1,21 @@
-the analogue code PEND of the Node.js
+The analogue code PEND of the Node.js
 
 Example:
-pend := NewPend()
-pend.Go(func() error {
+p := pend.New()
+p.Go(func() error {
     fmt.Println("1")
-	return nil
+    return nil
 })
-pend.Go(func() error {
+p.Go(func() error {
     fmt.Println("2")
-	return nil
+    time.Sleep(250 * time.Millisecond)
+    return nil
 })
-pend.Go(func() error {
+p.Go(func() error {
     fmt.Println("3")
-	return nil
+    return nil
 })
-
-err := pend.Wait()
+err := p.Wait()
 if err != nil {
-	log.Println(err)
+    log.Println(err)
 }
