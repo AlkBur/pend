@@ -19,3 +19,8 @@ err := p.Wait()
 if err != nil {
     log.Println(err)
 }
+
+
+Speed test:
+BenchmarkWithPend:      200000      5309 ns/op
+BenchmarkWithoutPend:   5	        250538660 ns/op
